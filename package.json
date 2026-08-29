@@ -33,7 +33,6 @@
     "rrule": "^2.8.1",
     "recharts": "^3.0.0",
     "pino": "^9.5.0",
-    "@sentry/nextjs": "^9.0.0",
     "papaparse": "^5.4.1"
   },
   "devDependencies": {
@@ -51,5 +50,5 @@
     "typescript": "^5.7.0",
     "vitest": "^3.0.0"
   },
-  "packageManager": "pnpm@10.0.0"
+  "packageManager": "pnpm@10.19.0"
 }

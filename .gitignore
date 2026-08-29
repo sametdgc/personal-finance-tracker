@@ -12,3 +12,6 @@ coverage/
 playwright-report/
 test-results/
 .DS_Store
+
+# Neon CLI workspace link
+.neon
