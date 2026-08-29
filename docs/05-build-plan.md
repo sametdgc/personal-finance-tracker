@@ -86,7 +86,7 @@ transfer produces two rows with the same `transferGroupId` and correct snapshots
 - Gold job: daily XAU_G → TRY
 - CPI job: monthly TÜİK TÜFE
 - Backfill script for historical FX (2 years) and CPI (5 years)
-- Structured logging on every job run; Sentry capture on failure
+- Structured logging on every job run; errors logged with the job name and period
 - `vercel.json` cron schedules
 
 **Acceptance:** invoke the same cron endpoint twice in a period — the second is a
@@ -179,7 +179,6 @@ deduplication).
 ## Phase 10 — Make it real
 
 - PWA manifest, icons, installable, offline shell
-- Sentry with release tagging and source maps
 - Playwright over three flows: sign-in → today, quick-add → safe-to-spend changes,
   month close end-to-end
 - Loading skeletons, error boundaries, empty states everywhere

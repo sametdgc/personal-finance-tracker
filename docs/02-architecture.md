@@ -19,7 +19,6 @@
 | Unit tests | Vitest | |
 | E2E | Playwright | Three flows only, see `docs/06-conventions.md`. |
 | Lint + format | Biome | One tool, one config. Replaces ESLint + Prettier. |
-| Errors | Sentry | |
 | Logs | pino, structured JSON | |
 | CI/CD | GitHub Actions → Vercel | |
 | Package manager | pnpm | |
@@ -163,4 +162,3 @@ fail mysteriously at 3am. No `process.env` access anywhere else.
 - Vercel, `main` = production.
 - Neon: one production branch, one branch per PR for previews.
 - Migrations run in CI on merge, before the deploy promotes.
-- Sentry release tagged per deploy.

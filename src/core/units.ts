@@ -25,7 +25,13 @@ export const UNITS: Readonly<Record<UnitCode, UnitDef>> = {
   TRY: { code: 'TRY', kind: 'currency', scale: 2, symbol: '₺', label: 'Türk Lirası' },
   USD: { code: 'USD', kind: 'currency', scale: 2, symbol: '$', label: 'US Dollar' },
   EUR: { code: 'EUR', kind: 'currency', scale: 2, symbol: '€', label: 'Euro' },
-  XAU_G: { code: 'XAU_G', kind: 'commodity', scale: 4, symbol: 'g', label: 'Gold (gram)' },
+  XAU_G: {
+    code: 'XAU_G',
+    kind: 'commodity',
+    scale: 4,
+    symbol: 'g',
+    label: 'Gold (gram)',
+  },
 } as const
 
 /**

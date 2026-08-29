@@ -80,7 +80,7 @@ Every handler:
 4. if 0 rows affected -> return { skipped: true }
 5. do the work
 6. UPDATE job_runs status, finishedAt
-7. on error: UPDATE status='failed', error; capture to Sentry; return 500
+7. on error: UPDATE status='failed', error; log it; return 500
 ```
 
 **Backfill:** each job also exposes a range mode so a gap is recoverable without a

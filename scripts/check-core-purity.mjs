@@ -37,8 +37,7 @@ function walk(dir) {
 
     const src = readFileSync(full, 'utf8')
     const importRe = /(?:from|import)\s+['"]([^'"]+)['"]/g
-    let match
-    while ((match = importRe.exec(src)) !== null) {
+    for (const match of src.matchAll(importRe)) {
       const spec = match[1]
       if (FORBIDDEN.some((f) => spec === f || spec.startsWith(`${f}/`))) {
         violations.push(`${full}: imports "${spec}"`)

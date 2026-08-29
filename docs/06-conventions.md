@@ -40,7 +40,7 @@ export const addTransaction = authedAction
 ```
 
 The wrapper handles: session check, Zod parse, `userId` injection, error mapping to
-a typed result, Sentry capture, and structured logging. **An action that does not
+a typed result, and structured logging. **An action that does not
 use the wrapper is a bug.**
 
 Actions are thin. They call a query, call `core/`, call a query, return. Business
@@ -57,7 +57,7 @@ type ActionResult<T> =
 ```
 
 Expected failures (validation, conflict, stale data) are `ok: false`. Unexpected
-failures throw, are captured by Sentry, and surface a generic message. Never leak an
+failures throw, are logged, and surface a generic message. Never leak an
 internal error message to the UI.
 
 ## Testing

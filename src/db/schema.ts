@@ -8,6 +8,7 @@
  *   4. Percentages are integer basis points.
  */
 
+import { sql } from 'drizzle-orm'
 import {
   bigint,
   boolean,
@@ -37,12 +38,7 @@ export const accountKind = pgEnum('account_kind', [
   'physical',
 ])
 
-export const txType = pgEnum('tx_type', [
-  'income',
-  'expense',
-  'transfer',
-  'adjustment',
-])
+export const txType = pgEnum('tx_type', ['income', 'expense', 'transfer', 'adjustment'])
 
 export const txSource = pgEnum('tx_source', [
   'manual',
@@ -105,10 +101,17 @@ export const policy = pgTable('policy', {
     .notNull()
     .default('3'),
 
-  /** Extra headroom held back from safe-to-spend, in base minor units. */
+  /**
+   * Extra headroom held back from safe-to-spend, in base minor units.
+   *
+   * The default is `sql`0`` and not `0n` on purpose: drizzle-kit 0.31 serialises
+   * the schema snapshot with JSON.stringify, which throws
+   * "Do not know how to serialize a BigInt" on a literal bigint default and takes
+   * `pnpm db:generate` down with it. Do not "fix" this back to `0n`.
+   */
   spendingBufferMinor: bigint('spending_buffer_minor', { mode: 'bigint' })
     .notNull()
-    .default(0n),
+    .default(sql`0`),
 
   /** Drift below this is considered on-target. 300 = 3%. */
   driftToleranceBps: integer('drift_tolerance_bps').notNull().default(300),
@@ -198,10 +201,15 @@ export const accounts = pgTable(
     kind: accountKind('kind').notNull(),
     unit: unitCode('unit').notNull(),
 
-    /** Balance at openedOn, so we don't need every historical transaction. */
+    /**
+     * Balance at openedOn, so we don't need every historical transaction.
+     *
+     * `sql`0`` rather than `0n` — see the note on policy.spendingBufferMinor.
+     * drizzle-kit 0.31 cannot JSON-serialise a bigint default.
+     */
     openingBalanceMinor: bigint('opening_balance_minor', { mode: 'bigint' })
       .notNull()
-      .default(0n),
+      .default(sql`0`),
     openedOn: date('opened_on').notNull(),
 
     lastReconciledAt: timestamp('last_reconciled_at', { withTimezone: true }),
