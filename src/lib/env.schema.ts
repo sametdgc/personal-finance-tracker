@@ -11,6 +11,15 @@
 
 import { z } from 'zod'
 
+/**
+ * An unset variable does not always arrive as `undefined`. Vercel and GitHub
+ * Actions both hand a declared-but-empty variable to the process as `''`, which
+ * would otherwise sail past `.optional()` and then fail the inner check. Treat
+ * blank as absent so defaults and optionality behave the way the schema reads.
+ */
+const blankAsUndefined = <T extends z.ZodTypeAny>(schema: T) =>
+  z.preprocess((v) => (typeof v === 'string' && v.trim() === '' ? undefined : v), schema)
+
 export const envSchema = z.object({
   NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
 
@@ -21,13 +30,13 @@ export const envSchema = z.object({
     .url('must be a postgres connection URL'),
 
   // --- Not yet required; see docs/05-build-plan.md -------------------------
-  BETTER_AUTH_SECRET: z.string().optional(),
-  BETTER_AUTH_URL: z.string().url().optional(),
-  CRON_SECRET: z.string().optional(),
-  TELEGRAM_BOT_TOKEN: z.string().optional(),
-  TELEGRAM_WEBHOOK_SECRET: z.string().optional(),
-  FX_API_BASE: z.string().url().default('https://api.frankfurter.app'),
-  GOLD_API_KEY: z.string().optional(),
+  BETTER_AUTH_SECRET: blankAsUndefined(z.string().optional()),
+  BETTER_AUTH_URL: blankAsUndefined(z.string().url().optional()),
+  CRON_SECRET: blankAsUndefined(z.string().optional()),
+  TELEGRAM_BOT_TOKEN: blankAsUndefined(z.string().optional()),
+  TELEGRAM_WEBHOOK_SECRET: blankAsUndefined(z.string().optional()),
+  FX_API_BASE: blankAsUndefined(z.string().url().default('https://api.frankfurter.app')),
+  GOLD_API_KEY: blankAsUndefined(z.string().optional()),
 })
 
 export type Env = z.infer<typeof envSchema>

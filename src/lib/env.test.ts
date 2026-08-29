@@ -18,4 +18,17 @@ describe('parseEnv', () => {
   it('fails loudly and names the missing variable', () => {
     expect(() => parseEnv({ NODE_ENV: 'test' })).toThrow(/DATABASE_URL/)
   })
+
+  it('treats a declared-but-empty optional variable as absent', () => {
+    // Vercel and GitHub Actions both pass an unset variable through as ''.
+    const parsed = parseEnv({ ...valid, BETTER_AUTH_URL: '', FX_API_BASE: '  ' })
+    expect(parsed.BETTER_AUTH_URL).toBeUndefined()
+    expect(parsed.FX_API_BASE).toBe('https://api.frankfurter.app')
+  })
+
+  it('still rejects a non-empty value that is not a URL', () => {
+    expect(() => parseEnv({ ...valid, BETTER_AUTH_URL: 'not-a-url' })).toThrow(
+      /BETTER_AUTH_URL/,
+    )
+  })
 })
