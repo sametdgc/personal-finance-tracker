@@ -1,0 +1,8 @@
+{
+  "crons": [
+    { "path": "/api/cron/fx", "schedule": "0 6 * * *" },
+    { "path": "/api/cron/gold", "schedule": "0 6 * * *" },
+    { "path": "/api/cron/cpi", "schedule": "0 7 3 * *" },
+    { "path": "/api/cron/nudges", "schedule": "0 9 * * *" }
+  ]
+}
